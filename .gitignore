@@ -1,3 +1,6 @@
+# Ignore dependencies
+lib/
+
 # Prerequisites
 *.d
 
