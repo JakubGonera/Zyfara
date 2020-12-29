@@ -46,6 +46,51 @@ std::vector<float> slowvoronoi::slow(int width,int height,int border,std::vector
 	}
 	return pixels;	
 }
+
+void inloop(int l,int r,int width,int border,std::vector<std::pair<int, int>> *points,std::vector<float> *pixels)
+{
+	for(int i = l;i<r;i++)
+	{
+	int h = i / width;
+	int w = i % width;
+	int smallestdist = INT_MAX;
+	int closest;
+	for (int j = 0; j < (int)(*points).size(); j++)
+	{
+		int dist = (w - (*points)[j].first)*(w - (*points)[j].first) + (h - (*points)[j].second)*(h - (*points)[j].second);
+		if (dist < smallestdist) {
+			closest = j;
+			smallestdist = dist;
+		}
+	}
+	int secondpoint = 0;
+	if (closest == 0)secondpoint = 1;
+	float dist = distfrom((*points)[closest], (*points)[secondpoint], std::make_pair(w, h));
+	for (int j = 0; j < (int)(*points).size(); j++)
+	{
+		float temp = distfrom((*points)[closest], (*points)[j], std::make_pair(w, h));
+		if (dist > temp)dist = temp;
+	}
+	if (dist <= border)(*pixels)[i] = 0;
+	else (*pixels)[i] = dist;
+	}
+}
+
+std::vector<float> slowvoronoi::multi(int width,int height,int border,std::vector<std::pair<int, int>> points)
+{
+	std::vector<float> pixels(width*height);
+		int m = width*height/12;
+	for (int i = 0; i < 12; i++)
+	{
+
+		std::thread thrd(inloop,i*m,(i+1)*m,width,border,&points,&pixels);
+		thrd.join();
+	}
+	std::thread thrd(inloop,12*m,width*height,width,border,&points,&pixels);
+	thrd.join();
+	return pixels;	
+}
+
 std::vector<std::pair<int, int>> slowvoronoi::randpoints(int n,int seed,int width,int height)
 {
 	std::vector<std::pair<int, int>> p;
