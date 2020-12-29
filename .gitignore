@@ -1,3 +1,6 @@
+#majkel ignores
+*.exe
+
 # Ignore dependencies
 lib/
 
