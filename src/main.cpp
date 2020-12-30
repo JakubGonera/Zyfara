@@ -18,7 +18,7 @@ int main()
 	
 	sf::Sprite sprite(texture);
 	slowvoronoi sv;
-	std::vector<std::pair<int,int>> points= sv.randpoints(30,2137,1280,720, 100);
+	std::vector<std::pair<int,int>> points= sv.randpoints(30,2137,1280,720, 200);
 	std::vector<float> dists = sv.multi(1280,720,5,points);
 	
 	for(int x=0;x<1280;x++)

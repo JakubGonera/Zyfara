@@ -3,15 +3,14 @@
 
 float distfrom(std::pair<int, int> a, std::pair<int, int> b, std::pair<int, int> p)
 {
-	if (a.second == b.second)return p.second - (a.second - b.second) / 2;
 	int tg1 = b.second - a.second;
 	int tg2 = b.first - a.first;
 	int A = -1 * (tg2);
 	int B = -1 * (tg1);
-	int C = A*(-a.first - b.first) / 2 + B*(-a.second - b.second) / 2;
-	float dist = A*p.first + B*p.second + C;
+	int C = A * (-a.first - b.first) / 2 + B * (-a.second - b.second) / 2;
+	float dist = A * p.first + B * p.second + C;
 	if (dist < 0)dist *= -1;
-	dist /= sqrt(A*A + B*B);
+	dist /= sqrt(A * A + B * B);
 	return dist;
 }
 
@@ -99,6 +98,6 @@ std::vector<std::pair<int, int>> slowvoronoi::randpoints(int n,int seed,int widt
 	std::vector<std::pair<int, int>> p;
 	std::srand(seed);
 	for(int i = 0; i<n;i++)
-		p.push_back(std::make_pair((std::rand() % (width + margin)), (std::rand() % (height + margin))));
+		p.push_back({ (std::rand() % (width + 2 * margin) - margin), (std::rand() % (height + 2 * margin) - margin) });
 	return p;
 }
