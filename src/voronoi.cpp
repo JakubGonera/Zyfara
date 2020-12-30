@@ -94,11 +94,11 @@ std::vector<float> slowvoronoi::multi(int width,int height,int border,std::vecto
 	return pixels;	
 }
 
-std::vector<std::pair<int, int>> slowvoronoi::randpoints(int n,int seed,int width,int height)
+std::vector<std::pair<int, int>> slowvoronoi::randpoints(int n,int seed,int width,int height, int margin)
 {
 	std::vector<std::pair<int, int>> p;
 	std::srand(seed);
 	for(int i = 0; i<n;i++)
-		p.push_back(std::make_pair((std::rand() % width), (std::rand() % height)));
+		p.push_back(std::make_pair((std::rand() % (width + margin)), (std::rand() % (height + margin))));
 	return p;
 }
