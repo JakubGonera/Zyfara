@@ -1,6 +1,8 @@
-#include <SFML/Graphics.hpp>
 #include <vector>
 #include <utility>
+
+#include <SFML/Graphics.hpp>
+
 #include "voronoi.hpp"
 
 int main()
@@ -16,16 +18,26 @@ int main()
 	
 	sf::Sprite sprite(texture);
 	slowvoronoi sv;
-	std::vector<std::pair<int,int>> points= sv.randpoints(20,2137,1280,720);
+	std::vector<std::pair<int,int>> points= sv.randpoints(30,2137,1280,720);
 	std::vector<float> dists = sv.multi(1280,720,5,points);
 	
 	for(int x=0;x<1280;x++)
 	{
 		for(int y=0;y<720;y++)
 		{
-			pixels[4*(y * 1280+x)]   = dists[y*1280+x]; // R?
-			pixels[4*(y * 1280+x)+1] = dists[y*1280+x];  // G?
-			pixels[4*(y * 1280+x)+2] = dists[y*1280+x];  // B?
+			if (dists[y * 1280 + x] < 17) {
+				pixels[4 * (y * 1280 + x)] = 227;
+				pixels[4 * (y * 1280 + x) + 1] = 223;
+				pixels[4 * (y * 1280 + x) + 2] = 212;
+			}
+			else{
+				pixels[4 * (y * 1280 + x)] = 128;
+				pixels[4 * (y * 1280 + x) + 1] = 79;
+				pixels[4 * (y * 1280 + x) + 2] = 54;
+			}
+			//pixels[4*(y * 1280+x)]   = dists[y*1280+x]; // R?
+			//pixels[4*(y * 1280+x)+1] = dists[y*1280+x];  // G?
+			//pixels[4*(y * 1280+x)+2] = dists[y*1280+x];  // B?
 			pixels[4*(y * 1280+x)+3] = 255; // A?
 		}
 	}

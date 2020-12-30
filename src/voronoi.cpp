@@ -1,6 +1,5 @@
-#include<bits/stdc++.h>
 #include"voronoi.hpp" 
- 
+#include <thread>
 
 float distfrom(std::pair<int, int> a, std::pair<int, int> b, std::pair<int, int> p)
 {
@@ -51,40 +50,44 @@ void inloop(int l,int r,int width,int border,std::vector<std::pair<int, int>> *p
 {
 	for(int i = l;i<r;i++)
 	{
-	int h = i / width;
-	int w = i % width;
-	int smallestdist = INT_MAX;
-	int closest;
-	for (int j = 0; j < (int)(*points).size(); j++)
-	{
-		int dist = (w - (*points)[j].first)*(w - (*points)[j].first) + (h - (*points)[j].second)*(h - (*points)[j].second);
-		if (dist < smallestdist) {
-			closest = j;
-			smallestdist = dist;
+		int h = i / width;
+		int w = i % width;
+		int smallestdist = INT_MAX;
+		int closest;
+		for (int j = 0; j < (int)(*points).size(); j++)
+		{
+			int dist = (w - (*points)[j].first)*(w - (*points)[j].first) + (h - (*points)[j].second)*(h - (*points)[j].second);
+			if (dist < smallestdist) {
+				closest = j;
+				smallestdist = dist;
+			}
 		}
-	}
-	int secondpoint = 0;
-	if (closest == 0)secondpoint = 1;
-	float dist = distfrom((*points)[closest], (*points)[secondpoint], std::make_pair(w, h));
-	for (int j = 0; j < (int)(*points).size(); j++)
-	{
-		float temp = distfrom((*points)[closest], (*points)[j], std::make_pair(w, h));
-		if (dist > temp)dist = temp;
-	}
-	if (dist <= border)(*pixels)[i] = 0;
-	else (*pixels)[i] = dist;
+		int secondpoint = 0;
+		if (closest == 0)secondpoint = 1;
+		float dist = distfrom((*points)[closest], (*points)[secondpoint], std::make_pair(w, h));
+		for (int j = 0; j < (int)(*points).size(); j++)
+		{
+			float temp = distfrom((*points)[closest], (*points)[j], std::make_pair(w, h));
+			if (dist > temp)dist = temp;
+		}
+		if (dist <= border)(*pixels)[i] = 0;
+		else (*pixels)[i] = dist;
 	}
 }
 
 std::vector<float> slowvoronoi::multi(int width,int height,int border,std::vector<std::pair<int, int>> points)
 {
 	std::vector<float> pixels(width*height);
-		int m = width*height/12;
+	int m = width*height/12;
+	std::vector<std::thread> threadVec;
 	for (int i = 0; i < 12; i++)
 	{
 
-		std::thread thrd(inloop,i*m,(i+1)*m,width,border,&points,&pixels);
-		thrd.join();
+		threadVec.push_back(std::thread(inloop,i*m,(i+1)*m,width,border,&points,&pixels));
+	}
+	for (auto& x : threadVec)
+	{
+		x.join();
 	}
 	std::thread thrd(inloop,12*m,width*height,width,border,&points,&pixels);
 	thrd.join();
@@ -95,6 +98,7 @@ std::vector<std::pair<int, int>> slowvoronoi::randpoints(int n,int seed,int widt
 {
 	std::vector<std::pair<int, int>> p;
 	std::srand(seed);
-	for(int i = 0; i<n;i++)p.push_back(std::make_pair((std::rand() % width), (std::rand() % height)));
+	for(int i = 0; i<n;i++)
+		p.push_back(std::make_pair((std::rand() % width), (std::rand() % height)));
 	return p;
 }
