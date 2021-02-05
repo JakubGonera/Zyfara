@@ -20,8 +20,8 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
 	ImGui::SFML::Init(window);
 
-	DebugUI debugUI;
 	TextureRendering textureRendering(WIDTH, HEIGHT);
+	DebugUI debugUI(textureRendering);
 
     textureRendering.render();
 
@@ -40,14 +40,8 @@ int main()
 
 		window.clear();
         window.draw(textureRendering.getSprite());
-		//ImGui::Render();
 		ImGui::SFML::Render(window);
         window.display();
-		/*
-        
-        window.draw(shape);
-        window.display();
-		*/
 	}
 	ImGui::SFML::Shutdown();
 

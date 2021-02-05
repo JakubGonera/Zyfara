@@ -10,6 +10,7 @@ TextureRendering::TextureRendering(int width, int height)
 	noise.SetNoiseType(FastNoiseLite::NoiseType_OpenSimplex2);
 	noise.SetFractalType(FastNoiseLite::FractalType_FBm);
 	noise.SetFrequency(0.01);
+	noise.SetFractalLacunarity(2.8f);
 	noiseData = new float[width * height];
 	int noiseIndex = 0;
 }
@@ -31,7 +32,8 @@ void TextureRendering::render()
 		for (int y = 0; y < 720; y++)
 		{
 			noiseData[noiseIndex] = noise.GetNoise((float)x, (float)y);
-			dists[y * 1280 + x] += noiseData[noiseIndex] * 10;
+			if(noiseEnabled)
+				dists[y * 1280 + x] += noiseData[noiseIndex] * 10;
 			if (dists[y * 1280 + x] < 17) {
 				pixels[4 * (y * 1280 + x)] = 227;
 				pixels[4 * (y * 1280 + x) + 1] = 223;
@@ -56,4 +58,14 @@ void TextureRendering::render()
 sf::Sprite& TextureRendering::getSprite()
 {
 	return sprite;
+}
+
+FastNoiseLite& TextureRendering::getNoise()
+{
+	return noise;
+}
+
+void TextureRendering::enableNoise(bool state)
+{
+	noiseEnabled = state;
 }

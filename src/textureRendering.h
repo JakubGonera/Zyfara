@@ -10,7 +10,7 @@ class TextureRendering {
 	sf::Texture texture;
 	sf::Sprite sprite;
 	FastNoiseLite noise;
-
+	bool noiseEnabled = true;
 public:
 	TextureRendering(int width, int height);
 	~TextureRendering();
@@ -18,4 +18,6 @@ public:
 	void render();
 
 	sf::Sprite& getSprite();
+	FastNoiseLite& getNoise();
+	void enableNoise(bool state);
 };
