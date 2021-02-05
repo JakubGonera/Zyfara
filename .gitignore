@@ -3,6 +3,7 @@
 
 # Ignore dependencies
 lib/
+imgui.ini
 
 # Prerequisites
 *.d
