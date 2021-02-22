@@ -1,5 +1,6 @@
 #include"voronoi.hpp" 
 #include <thread>
+#include <cmath>
 
 float distfrom(std::pair<int, int> a, std::pair<int, int> b, std::pair<int, int> p)
 {

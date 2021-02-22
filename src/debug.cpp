@@ -1,6 +1,6 @@
 #include "debug.h"
-#include "imgui.h"
-#include "imgui-SFML.h"
+#include "Vendor/imgui/imgui.h"
+#include "Vendor/imgui/imgui-SFML.h"
 #include "Vendor/FastNoise/FastNoiseLite.h"
 
 //wrapper for vector usage in some ImGui widgets

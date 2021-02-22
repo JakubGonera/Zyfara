@@ -1,7 +1,7 @@
 #include "imgui-SFML.h"
-#include <imgui.h>
+#include "imgui.h"
 
-#include <SFML/Config.hpp>
+#include "SFML/Config.hpp"
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
