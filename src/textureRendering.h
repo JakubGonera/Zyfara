@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "voronoi.hpp"
 #include "Vendor/FastNoise/FastNoiseLite.h"
+#include "Skins/skin.h"
 
 class TextureRendering {
 	sf::Uint8* pixels = nullptr;
@@ -15,7 +16,7 @@ public:
 	TextureRendering(int width, int height);
 	~TextureRendering();
 
-	void render();
+	void render(Skin* skin);
 
 	sf::Sprite& getSprite();
 	FastNoiseLite& getNoise();

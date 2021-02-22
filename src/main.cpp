@@ -11,6 +11,8 @@
 #include "voronoi.hpp"
 #include "debug.h"
 #include "textureRendering.h"
+#include "Skins/siatkowa.h"
+#include "Skins/skin.h"
 
 #define WIDTH 1280
 #define HEIGHT 720
@@ -20,10 +22,15 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
 	ImGui::SFML::Init(window);
 
-	TextureRendering textureRendering(WIDTH, HEIGHT);
-	DebugUI debugUI(textureRendering);
+    std::vector<Skin*> skins;
 
-    textureRendering.render();
+    Siatkowa* siatkowa = new Siatkowa();
+    skins.push_back(static_cast<Skin*>(siatkowa));
+
+	TextureRendering textureRendering(WIDTH, HEIGHT);
+	DebugUI debugUI(textureRendering, skins);
+
+    textureRendering.render(skins[0]);
 
     while (window.isOpen())
     {
