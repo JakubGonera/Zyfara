@@ -12,6 +12,7 @@
 #include "debug.h"
 #include "textureRendering.h"
 #include "Skins/siatkowa.h"
+#include "Skins/zachodnio.h"
 #include "Skins/skin.h"
 
 #define WIDTH 1280
@@ -26,6 +27,8 @@ int main()
 
     Siatkowa* siatkowa = new Siatkowa();
     skins.push_back(static_cast<Skin*>(siatkowa));
+    Zachodnio* zachodnio = new Zachodnio();
+    skins.push_back(static_cast<Skin*>(zachodnio));
 
 	TextureRendering textureRendering(WIDTH, HEIGHT);
 	DebugUI debugUI(textureRendering, skins);

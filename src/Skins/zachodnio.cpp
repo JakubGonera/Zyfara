@@ -1,12 +1,12 @@
-#include "siatkowa.h"
+#include "zachodnio.h"
 #include "../Vendor/imgui/imgui.h"
 
-Siatkowa::Siatkowa()
+Zachodnio::Zachodnio()
 {
-	name = "Zyrafa siatkowana";
+	name = "Zyrafa zachodnioafrykanska";
 }
 
-void Siatkowa::render(sf::Uint8* pixels, std::vector<float>& dists, float* noiseData)
+void Zachodnio::render(sf::Uint8* pixels, std::vector<float>& dists, float* noiseData)
 {
 	int noiseIndex = 0;
 	int primary[3] = { primaryCol[0] * 255, primaryCol[1] * 255, primaryCol[2] * 255 };
@@ -35,24 +35,24 @@ void Siatkowa::render(sf::Uint8* pixels, std::vector<float>& dists, float* noise
 	}
 }
 
-void Siatkowa::displayDebug(sf::RenderWindow& window)
+void Zachodnio::displayDebug(sf::RenderWindow& window)
 {
 	ImGui::ColorEdit3("Primary color", primaryCol);
 	ImGui::ColorEdit3("Secondary color", secondaryCol);
 	ImGui::SliderFloat("Stripes width", &stripWidth, 0, 50, "%.3f");
 }
 
-const std::string& Siatkowa::getName()
+const std::string& Zachodnio::getName()
 {
 	return name;
 }
 
-std::tuple<int, int, int> Siatkowa::getPrimaryCol()
+std::tuple<int, int, int> Zachodnio::getPrimaryCol()
 {
-	return {primaryCol[0] * 255, primaryCol[1] * 255, primaryCol[2] * 255 };
+	return { primaryCol[0] * 255, primaryCol[1] * 255, primaryCol[2] * 255 };
 }
 
-std::tuple<int, int, int> Siatkowa::getSecondaryCol()
+std::tuple<int, int, int> Zachodnio::getSecondaryCol()
 {
 	return { secondaryCol[0] * 255, secondaryCol[1] * 255, secondaryCol[2] * 255 };
 }

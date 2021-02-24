@@ -2,12 +2,12 @@
 #include "skin.h"
 #include <tuple>
 
-class Siatkowa : public Skin {
-	float primaryCol[3] = {105.f/255,69.f/255,50.f/255};
-	float secondaryCol[3] = { 204.f / 255,187.f / 255,179.f / 255 };
-	float stripWidth = 17;
+class Zachodnio : public Skin {
+	float primaryCol[3] = { 179.f / 255,134.f / 255,80.f / 255 };
+	float secondaryCol[3] = { 244.f / 255,227.f / 255,199.f / 255 };
+	float stripWidth = 20;
 public:
-	Siatkowa();
+	Zachodnio();
 	void render(sf::Uint8* pixels, std::vector<float>& dists, float* noiseData) override;
 	void displayDebug(sf::RenderWindow& window) override;
 	const std::string& getName() override;
