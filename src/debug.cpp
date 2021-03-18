@@ -33,7 +33,7 @@ namespace ImGui
 DebugUI::DebugUI(TextureRendering& _renderer, std::vector<Skin*> _skins) : renderer(_renderer), skins(_skins)
 {
 	currentSkin = skins[0];
-	for (int i = 0; i < skins.size(); i++)
+	for (int i = 0; i < (int)skins.size(); i++)
 	{
 		names.push_back(skins[i]->getName());
 	}

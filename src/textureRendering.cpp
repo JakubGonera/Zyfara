@@ -24,18 +24,19 @@ TextureRendering::~TextureRendering()
 void TextureRendering::render(Skin* skin)
 {
 	std::vector<std::pair<int, int>> points = sv.randpoints(30, 2137, 1280, 720, 200);
-	std::vector<float> dists = sv.multi(1280, 720, 5, points);
+	
+	std::vector<float> dists = sv.randbordermulti(1280, 720, 10,70, points);
 
 	int noiseIndex = 0;
 	for (int x = 0; x < 1280; x++)
 	{
 		for (int y = 0; y < 720; y++)
 		{
-			noiseData[noiseIndex] = noise.GetNoise((float)x, (float)y);
+			noiseData[noiseIndex] = noise.GetNoise(1.0,1.0);//((float)x, (float)y);
 			noiseIndex++;
 		}
 	}
-
+	
 	skin->render(pixels, dists, noiseData);
 
 	texture.update(pixels);

@@ -9,8 +9,8 @@ Zachodnio::Zachodnio()
 void Zachodnio::render(sf::Uint8* pixels, std::vector<float>& dists, float* noiseData)
 {
 	int noiseIndex = 0;
-	int primary[3] = { primaryCol[0] * 255, primaryCol[1] * 255, primaryCol[2] * 255 };
-	int secondary[3] = { secondaryCol[0] * 255, secondaryCol[1] * 255, secondaryCol[2] * 255 };
+	int primary[3] = {  primaryCol[0] * 255,  primaryCol[1] * 255,  primaryCol[2] * 255 };
+	int secondary[3] = {  secondaryCol[0] * 255,  secondaryCol[1] * 255,  secondaryCol[2] * 255 };
 	for (int x = 0; x < 1280; x++)
 	{
 		for (int y = 0; y < 720; y++)
@@ -49,10 +49,10 @@ const std::string& Zachodnio::getName()
 
 std::tuple<int, int, int> Zachodnio::getPrimaryCol()
 {
-	return { primaryCol[0] * 255, primaryCol[1] * 255, primaryCol[2] * 255 };
+	return {  primaryCol[0] * 255,  primaryCol[1] * 255,  primaryCol[2] * 255 };
 }
 
 std::tuple<int, int, int> Zachodnio::getSecondaryCol()
 {
-	return { secondaryCol[0] * 255, secondaryCol[1] * 255, secondaryCol[2] * 255 };
+	return {  secondaryCol[0] * 255,  secondaryCol[1] * 255,  secondaryCol[2] * 255 };
 }
