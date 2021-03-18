@@ -6,8 +6,12 @@ Siatkowa::Siatkowa()
 	name = "Zyrafa siatkowana";
 }
 
-void Siatkowa::render(sf::Uint8* pixels, std::vector<float>& dists, float* noiseData)
+void Siatkowa::render(sf::Uint8* pixels, slowvoronoi& sv, float* noiseData)
 {
+	std::vector<std::pair<int, int>> points = sv.randpoints(30, 2137, 1280, 720, 200);
+
+	std::vector<float> dists = sv.randbordermulti(1280, 720, borderL, borderR, points);
+
 	int noiseIndex = 0;
 	int primary[3] = { primaryCol[0] * 255,  primaryCol[1] * 255,  primaryCol[2] * 255 };
 	int secondary[3] = {  secondaryCol[0] * 255,  secondaryCol[1] * 255,  secondaryCol[2] * 255 };
@@ -40,6 +44,8 @@ void Siatkowa::displayDebug(sf::RenderWindow& window)
 	ImGui::ColorEdit3("Primary color", primaryCol);
 	ImGui::ColorEdit3("Secondary color", secondaryCol);
 	ImGui::SliderFloat("Stripes width", &stripWidth, 0, 50, "%.3f");
+	ImGui::SliderFloat("Border L", &borderL, 0, 100, "%.3f");
+	ImGui::SliderFloat("Border R", &borderR, 0, 100, "%.3f");
 }
 
 const std::string& Siatkowa::getName()

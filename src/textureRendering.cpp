@@ -23,9 +23,7 @@ TextureRendering::~TextureRendering()
 
 void TextureRendering::render(Skin* skin)
 {
-	std::vector<std::pair<int, int>> points = sv.randpoints(30, 2137, 1280, 720, 200);
 	
-	std::vector<float> dists = sv.randbordermulti(1280, 720, 10,70, points);
 
 	int noiseIndex = 0;
 	for (int x = 0; x < 1280; x++)
@@ -37,7 +35,7 @@ void TextureRendering::render(Skin* skin)
 		}
 	}
 	
-	skin->render(pixels, dists, noiseData);
+	skin->render(pixels, sv, noiseData);
 
 	texture.update(pixels);
 }
