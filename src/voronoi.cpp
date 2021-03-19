@@ -2,6 +2,11 @@
 #include <thread>
 #include <cmath>
 #include<cstdlib>
+
+void slowvoronoi::set_seed(int val)
+{
+	seed=val;
+}
 float distfrom(std::pair<int, int> a, std::pair<int, int> b, std::pair<int, int> p)
 {
 	if(a==b)return 14102137.0;
@@ -136,7 +141,9 @@ std::vector<float> slowvoronoi::multi(int width,int height,int border,std::vecto
 	return pixels;//kly(width,height,pixels);	
 }
 
-void randborderinloop(int l,int r,int width,std::vector<std::vector<int>>*border,std::vector<std::pair<int, int>> *points,std::vector<float> *pixels)
+
+
+void randborderinloop(int l,int r,int width,std::vector<std::vector<int>>*border,std::vector<std::pair<int, int>> *points,std::vector<float> *pixels,std::vector<float>*closestborder)
 {
 	for(int i = l;i<r;i++)
 	{
@@ -156,20 +163,23 @@ void randborderinloop(int l,int r,int width,std::vector<std::vector<int>>*border
 		if (closest == 0)secondpoint = 1;
 		float dist = distfrom((*points)[closest], (*points)[secondpoint], std::make_pair(w, h));
 		(*pixels)[i]=69;
+		(*closestborder)[i]=1410692137;
 		for (int j = 0; j < (int)(*points).size(); j++)
 		{
 			float temp = distfrom((*points)[closest], (*points)[j], std::make_pair(w, h));
 			int y=std::min(closest,j);
 			int z=std::max(closest,j);
-			if(temp<=(*border)[y][z])(*pixels)[i]=0;
-			if (dist > temp)dist = temp;
+			if((*closestborder)[i]>temp-(*border)[y][z])(*closestborder)[i]=temp-(*border)[y][z];
+			dist=std::min(temp,dist);
 		}
+		
 		if((*pixels)[i])(*pixels)[i]=dist;
 	}
 }
 
-std::vector<float> slowvoronoi::randbordermulti(int width,int height,int borderL,int borderR,std::vector<std::pair<int, int>> points)
+std::vector<float> slowvoronoi::randbordermulti(int width,int height,int borderL,int borderR,std::vector<std::pair<int, int>> points,std::vector<float>&closestborder)
 {
+	srand(seed);
 	std::vector<float> pixels(width*height);
 	int m = width*height/12;
 	std::vector<std::vector<int>>border(points.size(),(std::vector<int>(points.size())));
@@ -180,13 +190,13 @@ std::vector<float> slowvoronoi::randbordermulti(int width,int height,int borderL
 	std::vector<std::thread> threadVec;
 	for (int i=0;i<12;i++)
 	{
-		threadVec.push_back(std::thread(randborderinloop,i*m,(i+1)*m,width,&border,&points,&pixels));
+		threadVec.push_back(std::thread(randborderinloop,i*m,(i+1)*m,width,&border,&points,&pixels,&closestborder));
 	}
 	for (auto&x:threadVec)
 	{
 		x.join();
 	}
-	std::thread thrd(randborderinloop,12*m,width*height,width,&border,&points,&pixels);
+	std::thread thrd(randborderinloop,12*m,width*height,width,&border,&points,&pixels,&closestborder);
 	thrd.join();
 	return pixels;
 }
@@ -194,7 +204,7 @@ std::vector<float> slowvoronoi::randbordermulti(int width,int height,int borderL
 std::vector<std::pair<int, int>> slowvoronoi::randpoints(int n,int seed,int width,int height, int margin)
 {
 	std::vector<std::pair<int, int>> p;
-	std::srand(seed);
+	srand(slowvoronoi::seed);
 	for(int i = 0; i<n;i++)
 		p.push_back({ (std::rand() % (width + 2 * margin) - margin), (std::rand() % (height + 2 * margin) - margin) });
 	return p;

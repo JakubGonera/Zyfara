@@ -7,6 +7,7 @@
 class DebugUI {
 	sf::Clock deltaClock;
 	TextureRendering& renderer;
+	int seed=2137;
 	float freq = 0.01;
 	int octaves = 5;
 	float lacunarity = 2.0;

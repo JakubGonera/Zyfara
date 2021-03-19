@@ -1,5 +1,10 @@
 #include "textureRendering.h"
 
+void TextureRendering::set_sv_seed(int val)
+{
+	sv.set_seed(val);
+}
+
 TextureRendering::TextureRendering(int width, int height)
 {
 	pixels = new sf::Uint8[width * height * 4];
@@ -30,7 +35,7 @@ void TextureRendering::render(Skin* skin)
 	{
 		for (int y = 0; y < 720; y++)
 		{
-			noiseData[noiseIndex] = noise.GetNoise(1.0,1.0);//((float)x, (float)y);
+			noiseData[noiseIndex] = noise.GetNoise((float)x, (float)y);
 			noiseIndex++;
 		}
 	}

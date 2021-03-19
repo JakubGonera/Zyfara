@@ -42,9 +42,8 @@ DebugUI::DebugUI(TextureRendering& _renderer, std::vector<Skin*> _skins) : rende
 void DebugUI::renderDebug(sf::RenderWindow& window)
 {
 	ImGui::SFML::Update(window, deltaClock.restart());
-
-	ImGui::Begin("Noise options");
-	
+	ImGui::Begin("Options");
+	ImGui::InputInt("seed", &seed);
 	ImGui::SliderFloat("frequency", &freq, 0.0f, 0.05f);
 	ImGui::SliderInt("octaves", &octaves, 1, 10);
 	ImGui::SliderFloat("lacunarity", &lacunarity, 0.0f, 5.f);
@@ -57,6 +56,7 @@ void DebugUI::renderDebug(sf::RenderWindow& window)
 	skins[currentSkin]->displayDebug(window);
 
 	if (ImGui::Button("Render again")) {
+		renderer.set_sv_seed(seed);
 		auto& noise = renderer.getNoise();
 		noise.SetFrequency(freq);
 		noise.SetFractalOctaves(octaves);
