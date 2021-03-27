@@ -26,10 +26,7 @@ TextureRendering::~TextureRendering()
 	delete[] noiseData;
 }
 
-void TextureRendering::render(Skin* skin)
-{
-	
-
+void TextureRendering::render(Skin* skin) {
 	int noiseIndex = 0;
 	for (int x = 0; x < 1280; x++)
 	{

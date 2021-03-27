@@ -44,24 +44,28 @@ void DebugUI::renderDebug(sf::RenderWindow& window)
 	ImGui::SFML::Update(window, deltaClock.restart());
 	ImGui::Begin("Options");
 	ImGui::InputInt("seed", &seed);
-	ImGui::SliderFloat("frequency", &freq, 0.0f, 0.05f);
-	ImGui::SliderInt("octaves", &octaves, 1, 10);
-	ImGui::SliderFloat("lacunarity", &lacunarity, 0.0f, 5.f);
-	ImGui::SliderFloat("gain", &gain, 0.0f, 1.f);
 	//ImGui::Checkbox("enable noise", &noiseEnabled);
 	
 	static int currentSkin = 0;
 	ImGui::ListBox("Pattern", &currentSkin, names);
 
+	ImGui::Separator();
+
+	ImGui::Text("Noise settings");
+
+	ImGui::SliderFloat("frequency", skins[currentSkin]->getFreq(), 0.0f, 0.05f);
+	ImGui::SliderInt("octaves", skins[currentSkin]->getOctaves(), 1, 10);
+	ImGui::SliderFloat("lacunarity", skins[currentSkin]->getLacunarity(), 0.0f, 5.f);
+	ImGui::SliderFloat("gain", skins[currentSkin]->getGain(), 0.0f, 1.f);
+	ImGui::SliderFloat("weighted strength", skins[currentSkin]->getStrength(), -1.0f, 1.f);
+
+	ImGui::Text("\n");
+
 	skins[currentSkin]->displayDebug(window);
 
 	if (ImGui::Button("Render again")) {
 		renderer.set_sv_seed(seed);
-		auto& noise = renderer.getNoise();
-		noise.SetFrequency(freq);
-		noise.SetFractalOctaves(octaves);
-		noise.SetFractalLacunarity(lacunarity);
-		noise.SetFractalGain(gain);
+		skins[currentSkin]->setNoise(renderer.getNoise());
 		//renderer.enableNoise(noiseEnabled);
 		renderer.render(skins[currentSkin]);
 	}

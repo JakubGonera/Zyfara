@@ -2,14 +2,14 @@
 #include "skin.h"
 #include <tuple>
 
-class Siatkowa : public Skin {
-	float primaryCol[3] = {105.f/255,69.f/255,50.f/255};
-	float secondaryCol[3] = { 204.f / 255,187.f / 255,179.f / 255 };
+class Numbijska : public Skin {
+	float primaryCol[3] = { 164.f/255, 124.f/255, 77.f/255};
+	float secondaryCol[3] = { .96, .89, .72};
 	float stripWidth = 17;
-	float borderL = 17, borderR = 17;
-	float noiseScaleFactor = 9;
+	float borderL = 10.5, borderR = 19;
+	float noiseScaleFactor = 10;
 public:
-	Siatkowa();
+	Numbijska();
 	void render(sf::Uint8* pixels, slowvoronoi& sv, float* noiseData) override;
 	void displayDebug(sf::RenderWindow& window) override;
 	const std::string& getName() override;

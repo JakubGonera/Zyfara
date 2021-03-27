@@ -13,6 +13,7 @@
 #include "textureRendering.h"
 #include "Skins/siatkowa.h"
 #include "Skins/zachodnio.h"
+#include "Skins/numbijska.h"
 #include "Skins/skin.h"
 
 #define WIDTH 1280
@@ -30,6 +31,8 @@ int main()
     skins.push_back(static_cast<Skin*>(siatkowa));
     Zachodnio* zachodnio = new Zachodnio();
     skins.push_back(static_cast<Skin*>(zachodnio));
+    Numbijska* numbijska = new Numbijska();
+    skins.push_back(static_cast<Skin*>(numbijska));
 
 	TextureRendering textureRendering(WIDTH, HEIGHT);
 	DebugUI debugUI(textureRendering, skins);
