@@ -122,7 +122,6 @@ std::vector<float>kly(int width,int height,std::vector<float>pixels)
 	return pixels;
 }
 
-
 std::vector<float> slowvoronoi::multi(int width,int height,int border,std::vector<std::pair<int, int>> points)
 {
 	std::vector<float> pixels(width*height);
@@ -140,8 +139,6 @@ std::vector<float> slowvoronoi::multi(int width,int height,int border,std::vecto
 	thrd.join();
 	return pixels;//kly(width,height,pixels);	
 }
-
-
 
 void randborderinloop(int l,int r,int width,std::vector<std::vector<int>>*border,std::vector<std::pair<int, int>> *points,std::vector<float> *pixels,std::vector<float>*closestborder)
 {
@@ -208,4 +205,85 @@ std::vector<std::pair<int, int>> slowvoronoi::randpoints(int n,int seed,int widt
 	for(int i = 0; i<n;i++)
 		p.push_back({ (std::rand() % (width + 2 * margin) - margin), (std::rand() % (height + 2 * margin) - margin) });
 	return p;
+}
+
+std::vector<std::pair<int, int>> slowvoronoi::poisson(int width, int height, int r)
+{
+	//Robert Bridson's Poisson Disk Sampling algorithm - running O(n)
+	int k = 30; //number of points generated before moving on
+	std::vector<std::pair<int, int>> points;
+	srand(seed);
+	
+	int gridSideLength = (float)(r + 1) / sqrt(2);
+	std::vector<std::vector<int>> grid(width / gridSideLength + 2, std::vector<int>(height / gridSideLength + 2, -1));
+
+	std::queue<int> activeList;
+	std::pair<int, int> firstPoint = { std::rand() % width , std::rand() % height };
+	grid[firstPoint.first / gridSideLength + 1][firstPoint.second / gridSideLength + 1] = 0;
+	points.push_back(firstPoint);
+	activeList.push(0);
+
+	while (!activeList.empty()) {
+		int pointIndex = activeList.front();
+		activeList.pop();
+
+		std::pair<int, int> gridIndex;
+		gridIndex.first = points[pointIndex].first < 0 ? 0 : points[pointIndex].first / gridSideLength + 1;
+		gridIndex.second = points[pointIndex].second < 0 ? 0 : points[pointIndex].second / gridSideLength + 1;
+		
+		for (int i = 0; i < k; i++)
+		{
+			double theta = ((double)std::rand() / (double)RAND_MAX) * 6.283185;
+			double radius = r + ((double)std::rand() / (double)RAND_MAX) * r;
+			std::pair<int, int> newPoint = { points[pointIndex].first + std::sin(theta) * radius, points[pointIndex].second + std::cos(theta) * radius };
+			
+			std::pair<int, int> newGridIndex;
+			newGridIndex.first = newPoint.first < 0 ? newPoint.first / gridSideLength : newPoint.first / gridSideLength + 1;
+			newGridIndex.second = newPoint.second < 0 ? newPoint.second / gridSideLength : newPoint.second / gridSideLength + 1;
+
+			bool collision = false;
+
+			if (newGridIndex.first < 0 || newGridIndex.second < 0 || newGridIndex.first > grid.size() - 1 || newGridIndex.second > grid[0].size() - 1 ) {
+				collision = true;
+			}
+
+			for (int x = -2; x < 2; x++)
+			{
+				if (collision)
+					break;
+				for (int y = -2; y < 2; y++)
+				{	
+					if (x == 0 && y == 0) {
+						if (grid[newGridIndex.first][newGridIndex.second] != -1) {
+							collision = true;
+							break;
+						}
+					}
+					else if (!collision) {
+						if (newGridIndex.first + x >= 0 && newGridIndex.second + y >= 0 && newGridIndex.first + x < grid.size() && newGridIndex.second + y < grid[0].size()) {
+							if (grid[newGridIndex.first + x][newGridIndex.second + y] == -1) {
+								continue;
+							}
+							else {
+								int neighbourIndex = grid[newGridIndex.first + x][newGridIndex.second + y];
+								int xDiff = std::abs(points[neighbourIndex].first - newPoint.first);
+								int yDiff = std::abs(points[neighbourIndex].second - newPoint.second);
+								if (sqrt(xDiff * xDiff + yDiff * yDiff) < r) {
+									collision = true;
+									break;
+								}
+							}
+						}
+					}
+					
+				}
+			}
+			if (!collision) {
+				points.push_back(newPoint);
+				grid[newGridIndex.first][newGridIndex.second] = points.size() - 1;
+				activeList.push(points.size() - 1);
+			}
+		}
+	}
+	return points;
 }

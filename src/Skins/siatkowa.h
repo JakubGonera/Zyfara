@@ -8,6 +8,8 @@ class Siatkowa : public Skin {
 	float stripWidth = 17;
 	float borderL = 17, borderR = 17;
 	float noiseScaleFactor = 9;
+	bool poisson = false;
+	int poissonRadius = 150;
 public:
 	Siatkowa();
 	void render(sf::Uint8* pixels, slowvoronoi& sv, float* noiseData) override;

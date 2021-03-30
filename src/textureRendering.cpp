@@ -1,10 +1,5 @@
 #include "textureRendering.h"
 
-void TextureRendering::set_sv_seed(int val)
-{
-	sv.set_seed(val);
-}
-
 TextureRendering::TextureRendering(int width, int height)
 {
 	pixels = new sf::Uint8[width * height * 4];
@@ -55,4 +50,9 @@ FastNoiseLite& TextureRendering::getNoise()
 void TextureRendering::enableNoise(bool state)
 {
 	noiseEnabled = state;
+}
+
+void TextureRendering::set_sv_seed(int val)
+{
+	sv.set_seed(val);
 }

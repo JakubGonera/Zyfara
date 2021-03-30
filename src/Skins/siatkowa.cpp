@@ -8,7 +8,11 @@ Siatkowa::Siatkowa()
 
 void Siatkowa::render(sf::Uint8* pixels, slowvoronoi& sv, float* noiseData)
 {
-	std::vector<std::pair<int, int>> points = sv.randpoints(30, 2137, 1280, 720, 200);
+	std::vector<std::pair<int, int>> points;
+	if(poisson)
+		points = sv.poisson(1280, 720, poissonRadius);
+	else
+		points = sv.randpoints(30, 2137, 1280, 720, 200);
 	std::vector<float>closestborder(1280*720);
 	std::vector<float> dists = sv.randbordermulti(1280, 720, borderL, borderR, points,closestborder);
 	
@@ -51,7 +55,10 @@ void Siatkowa::displayDebug(sf::RenderWindow& window)
 {
 	ImGui::ColorEdit3("Primary color", primaryCol);
 	ImGui::ColorEdit3("Secondary color", secondaryCol);
-	//ImGui::SliderFloat("Stripes width", &stripWidth, 0, 50, "%.3f");
+	ImGui::Checkbox("Poisson disk sampling", &poisson);
+	if (poisson) {
+		ImGui::SliderInt("Poisson radius", &poissonRadius, 10, 1000);
+	}
 	ImGui::SliderFloat("Border L", &borderL, 0, 100, "%.3f");
 	ImGui::SliderFloat("Border R", &borderR, 0, 100, "%.3f");
 	ImGui::SliderFloat("Noise scale factor", &noiseScaleFactor, 0, 100, "%.3f");
