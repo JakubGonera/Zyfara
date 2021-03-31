@@ -14,6 +14,8 @@
 #include "Skins/siatkowa.h"
 #include "Skins/zachodnio.h"
 #include "Skins/numbijska.h"
+#include "Skins/kordofanska.h"
+#include "Skins/angolska.h"
 #include "Skins/skin.h"
 
 #define WIDTH 1280
@@ -33,6 +35,10 @@ int main()
     skins.push_back(static_cast<Skin*>(zachodnio));
     Numbijska* numbijska = new Numbijska();
     skins.push_back(static_cast<Skin*>(numbijska));
+    Kordofanska* kordofanska = new Kordofanska();
+    skins.push_back(static_cast<Skin*>(kordofanska));
+    Angolska* angolska = new Angolska();
+    skins.push_back(static_cast<Skin*>(angolska));
 
 	TextureRendering textureRendering(WIDTH, HEIGHT);
 	DebugUI debugUI(textureRendering, skins);

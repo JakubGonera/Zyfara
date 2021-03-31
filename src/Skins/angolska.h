@@ -3,7 +3,7 @@
 #include <tuple>
 #include <string>
 
-class Zachodnio : public Skin {
+class Angolska : public Skin {
 public:
-	Zachodnio();
+	Angolska();
 };

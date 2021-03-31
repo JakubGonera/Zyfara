@@ -1,5 +1,6 @@
 #include "debug.h"
 #include "Vendor/imgui/imgui.h"
+#include "Vendor/imgui/imgui.cpp"
 #include "Vendor/imgui/imgui-SFML.h"
 #include "Vendor/FastNoise/FastNoiseLite.h"
 
