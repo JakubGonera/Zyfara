@@ -4,12 +4,12 @@
 Angolska::Angolska()
 {
 	name = "Zyrafa angolska";
-	primaryCol[0] = 134.f / 255;
-	primaryCol[1] = 78.f / 255;
-	primaryCol[2] = 14.f / 255;
-	secondaryCol[0] = .96;
-	secondaryCol[1] = .89;
-	secondaryCol[2] = .72;
+	primaryCol[0] = 130.f / 255;
+	primaryCol[1] = 80.f / 255;
+	primaryCol[2] = 23.f / 255;
+	secondaryCol[0] = 219.f / 255;
+	secondaryCol[1] = 206.f / 255;
+	secondaryCol[2] = 176.f / 255;
 	shadeCol[0] = 0;
 	shadeCol[1] = 0;
 	shadeCol[2] = 0;

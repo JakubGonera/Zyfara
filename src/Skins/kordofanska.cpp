@@ -7,9 +7,9 @@ Kordofanska::Kordofanska()
 	primaryCol[0] = 135.f / 255;
 	primaryCol[1] = 95.f / 255;
 	primaryCol[2] = 48.f / 255;
-	secondaryCol[0] = 236.f / 255;
-	secondaryCol[1] = 220.f / 255;
-	secondaryCol[2] = 181.f / 255;
+	secondaryCol[0] = 219.f / 255;
+	secondaryCol[1] = 206.f / 255;
+	secondaryCol[2] = 176.f / 255;
 	shadeCol[0] = 0;
 	shadeCol[1] = 0;
 	shadeCol[2] = 0;

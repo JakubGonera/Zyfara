@@ -4,9 +4,9 @@
 Numbijska::Numbijska()
 {
 	name = "Zyrafa numbijska";
-	primaryCol[0] = 173.f / 255;
-	primaryCol[1] = 122.f / 255;
-	primaryCol[2] = 63.f / 255;
+	primaryCol[0] = 186.f / 255;
+	primaryCol[1] = 123.f / 255;
+	primaryCol[2] = 60.f / 255;
 	secondaryCol[0] = .96;
 	secondaryCol[1] = .89;
 	secondaryCol[2] = .72;
@@ -14,5 +14,5 @@ Numbijska::Numbijska()
 	noiseScaleFactor = 7.5;
 	poisson = false;
 	poissonRadius = 150;
-
+	shaded = true;
 }

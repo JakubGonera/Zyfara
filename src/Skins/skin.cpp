@@ -92,10 +92,11 @@ void Skin::render(sf::Uint8* pixels, slowvoronoi& sv, FastNoiseLite& noise)
 						{
 							if (x + i >= 0 && x + i < 1280 && y + j >= 0 && y + j < 720) {
 								if (!(closestborder[(y + j) * 1280 + x + i] + noise.GetNoise((float)(x + i) * noiseZoom, (float)(y + j) * noiseZoom) * noiseScaleFactor <= 0)) {
-									count++;
-									sum[0] += pixels[4 * ((y + j) * 1280 + (x + i))];
-									sum[1] += pixels[4 * ((y + j) * 1280 + (x + i)) + 1];
-									sum[2] += pixels[4 * ((y + j) * 1280 + (x + i)) + 2];
+									count += kernel[i + 1][j + 1];
+									//count++;
+									sum[0] += pixels[4 * ((y + j) * 1280 + (x + i))] * kernel[i + 1][j + 1];
+									sum[1] += pixels[4 * ((y + j) * 1280 + (x + i)) + 1] * kernel[i + 1][j + 1];
+									sum[2] += pixels[4 * ((y + j) * 1280 + (x + i)) + 2] * kernel[i + 1][j + 1];
 								}
 							}
 						}

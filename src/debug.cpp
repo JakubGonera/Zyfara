@@ -43,6 +43,9 @@ DebugUI::DebugUI(TextureRendering& _renderer, std::vector<Skin*> _skins) : rende
 void DebugUI::renderDebug(sf::RenderWindow& window)
 {
 	ImGui::SFML::Update(window, deltaClock.restart());
+	
+	ImGui::SetNextWindowSize(ImVec2(500, 600));
+
 	ImGui::Begin("Options");
 	ImGui::InputInt("seed", &seed);
 	//ImGui::Checkbox("enable noise", &noiseEnabled);

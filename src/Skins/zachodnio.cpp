@@ -13,4 +13,5 @@ Zachodnio::Zachodnio()
 	noiseScaleFactor = 10;
 	poisson = true;
 	poissonRadius = 230;
+	shaded = true;
 }
