@@ -21,6 +21,11 @@
 #define WIDTH 1280
 #define HEIGHT 720
 
+//Used 3rd party software:
+//https://github.com/Auburn/FastNoiseLite
+//https://www.sfml-dev.org/
+//https://github.com/ocornut/imgui
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1280, 720), "Zyrafa");
