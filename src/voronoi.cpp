@@ -215,8 +215,10 @@ std::vector<std::pair<int, int>> slowvoronoi::poisson(int width, int height, int
 	srand(seed);
 	
 	int gridSideLength = (float)(r + 1) / sqrt(2);
+	//Grid for points - in every cell there will be utmost one point
 	std::vector<std::vector<int>> grid(width / gridSideLength + 2, std::vector<int>(height / gridSideLength + 2, -1));
 
+	//Points still to consider for generating new ones in their neighbourhood
 	std::queue<int> activeList;
 	std::pair<int, int> firstPoint = { std::rand() % width , std::rand() % height };
 	grid[firstPoint.first / gridSideLength + 1][firstPoint.second / gridSideLength + 1] = 0;

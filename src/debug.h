@@ -4,6 +4,7 @@
 #include "textureRendering.h"
 #include <string>
 
+//Class handling drawing ImGui window
 class DebugUI {
 	sf::Clock deltaClock;
 	TextureRendering& renderer;

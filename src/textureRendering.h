@@ -4,6 +4,8 @@
 #include "Vendor/FastNoise/FastNoiseLite.h"
 #include "Skins/skin.h"
 
+//Class acting as a interface between skins, main and debug script and holds instances of our voronoi and the noise generator
+
 class TextureRendering {
 	sf::Uint8* pixels = nullptr;
 	float* noiseData = nullptr;
