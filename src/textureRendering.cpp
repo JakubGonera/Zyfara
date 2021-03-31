@@ -32,7 +32,7 @@ void TextureRendering::render(Skin* skin) {
 		}
 	}
 	
-	skin->render(pixels, sv, noiseData);
+	skin->render(pixels, sv, noise);
 
 	texture.update(pixels);
 }

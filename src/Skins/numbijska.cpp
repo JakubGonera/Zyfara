@@ -14,4 +14,5 @@ Numbijska::Numbijska()
 	noiseScaleFactor = 7.5;
 	poisson = false;
 	poissonRadius = 150;
+
 }

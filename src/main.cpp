@@ -23,7 +23,7 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(1280, 720), "Zyrafa");
 	ImGui::SFML::Init(window);
     window.setFramerateLimit(60);
 

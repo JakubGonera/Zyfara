@@ -18,7 +18,6 @@ public:
 
 	void render(Skin* skin);
 	void set_sv_seed(int val);
-	int get_sv_seed();
 	sf::Sprite& getSprite();
 	FastNoiseLite& getNoise();
 	void enableNoise(bool state);

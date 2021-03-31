@@ -1,6 +1,7 @@
 #include "skin.h"
 #include "../Vendor/imgui/imgui.h"
 
+
 float* Skin::getFreq()
 {
     return &freq;
@@ -35,7 +36,7 @@ void Skin::setNoise(FastNoiseLite& noise)
     noise.SetFractalWeightedStrength(weightedStrength);
 }
 
-void Skin::render(sf::Uint8* pixels, slowvoronoi& sv, float* noiseData)
+void Skin::render(sf::Uint8* pixels, slowvoronoi& sv, FastNoiseLite& noise)
 {
 	std::vector<std::pair<int, int>> points;
 	if (poisson)
@@ -45,37 +46,69 @@ void Skin::render(sf::Uint8* pixels, slowvoronoi& sv, float* noiseData)
 	std::vector<float>closestborder(1280 * 720);
 	std::vector<float> dists = sv.randbordermulti(1280, 720, borderL, borderR, points, closestborder);
 
-	int noiseIndex = 0;
 	int primary[3] = { primaryCol[0] * 255,  primaryCol[1] * 255,  primaryCol[2] * 255 };
 	int secondary[3] = { secondaryCol[0] * 255,  secondaryCol[1] * 255,  secondaryCol[2] * 255 };
+	int shade[3] = { shadeCol[0] * 255,  shadeCol[1] * 255,  shadeCol[2] * 255 };
 	for (int x = 0; x < 1280; x++)
 	{
 		for (int y = 0; y < 720; y++)
 		{
-
-			//dists[y * 1280 + x] += noiseData[noiseIndex] * 10;
-			//if (dists[y * 1280 + x]<closestborder[y * 1280 + x]) {
-			if (closestborder[y * 1280 + x] + noiseData[noiseIndex] * noiseScaleFactor <= 0)
+			if (closestborder[y * 1280 + x] + noise.GetNoise((float)x * noiseZoom, (float)y * noiseZoom) * noiseScaleFactor <= 0)
 			{
 				pixels[4 * (y * 1280 + x)] = secondary[0];
 				pixels[4 * (y * 1280 + x) + 1] = secondary[1];
 				pixels[4 * (y * 1280 + x) + 2] = secondary[2];
 			}
 			else {
-				pixels[4 * (y * 1280 + x)] = primary[0];
-				pixels[4 * (y * 1280 + x) + 1] = primary[1];
-				pixels[4 * (y * 1280 + x) + 2] = primary[2];
+				if (!shaded) {
+					pixels[4 * (y * 1280 + x)] = primary[0];
+					pixels[4 * (y * 1280 + x) + 1] = primary[1];
+					pixels[4 * (y * 1280 + x) + 2] = primary[2];
+				}
+				else {
+					float djOgromnyChuj = 1/100.f;
+					float ratio = closestborder[y * 1280 + x] * djOgromnyChuj / (1 + abs(closestborder[y * 1280 + x] * djOgromnyChuj));
+					ratio = std::min(1.f, ratio);
+					pixels[4 * (y * 1280 + x)] = (shade[0] - primary[0]) * ratio + primary[0];
+					pixels[4 * (y * 1280 + x) + 1] = (-primary[1] + shade[1]) * ratio + primary[1];
+					pixels[4 * (y * 1280 + x) + 2] = (-primary[2] + shade[2]) * ratio + primary[2];
+				}
 			}
-			//pixels[4*(y * 1280+x)]   = dists[y*1280+x]; // R?
-			//pixels[4*(y * 1280+x)+1] = dists[y*1280+x];  // G?
-			//pixels[4*(y * 1280+x)+2] = dists[y*1280+x];  // B?
-			//			if(dists[y * 1280 + x]==0){
-			//	pixels[4 * (y * 1280 + x)] = 0;//secondary[0];
-			//	pixels[4 * (y * 1280 + x) + 1] = 0;//secondary[1];
-			//	pixels[4 * (y * 1280 + x) + 2] = 0;//secondary[2];
-			//}
-			pixels[4 * (y * 1280 + x) + 3] = 255; // A?
-			noiseIndex++;
+			pixels[4 * (y * 1280 + x) + 3] = 255;
+		}
+	}
+	if (shaded) {
+		for (int x = 0; x < 1280; x++)
+		{
+			for (int y = 0; y < 720; y++)
+			{
+				if (!(closestborder[y * 1280 + x] + noise.GetNoise((float)x * noiseZoom, (float)y * noiseZoom) * noiseScaleFactor <= 0)) {
+					int sum[3] = { 0,0,0 };
+					int count = 0;
+					int kernel[3][3] = { {1,2,1}, {2,4,2}, {1,2,1} };
+					for (int i = -1; i < 1; i++)
+					{
+						for (int j = -1; j < 1; j++)
+						{
+							if (x + i >= 0 && x + i < 1280 && y + j >= 0 && y + j < 720) {
+								if (!(closestborder[(y + j) * 1280 + x + i] + noise.GetNoise((float)(x + i) * noiseZoom, (float)(y + j) * noiseZoom) * noiseScaleFactor <= 0)) {
+									count++;
+									sum[0] += pixels[4 * ((y + j) * 1280 + (x + i))];
+									sum[1] += pixels[4 * ((y + j) * 1280 + (x + i)) + 1];
+									sum[2] += pixels[4 * ((y + j) * 1280 + (x + i)) + 2];
+								}
+							}
+						}
+					}
+					for (int& col : sum)
+					{
+						col /= count;
+					}
+					pixels[4 * (y * 1280 + x)] = sum[0];
+					pixels[4 * (y * 1280 + x) + 1] = sum[1];
+					pixels[4 * (y * 1280 + x) + 2] = sum[2];
+				}
+			}
 		}
 	}
 }
@@ -88,9 +121,14 @@ void Skin::displayDebug(sf::RenderWindow& window)
 	if (poisson) {
 		ImGui::SliderInt("Poisson radius", &poissonRadius, 10, 1000);
 	}
+	ImGui::Checkbox("Shaded", &shaded);
+	if (shaded) {
+		ImGui::ColorEdit3("Shaded color", shadeCol);
+	}
 	ImGui::SliderFloat("Border L", &borderL, 0, 100, "%.3f");
 	ImGui::SliderFloat("Border R", &borderR, 0, 100, "%.3f");
 	ImGui::SliderFloat("Noise scale factor", &noiseScaleFactor, 0, 100, "%.3f");
+	ImGui::SliderFloat("Noise zoom", &noiseZoom, 0, 3, "%.3f");
 }
 
 const std::string& Skin::getName()
