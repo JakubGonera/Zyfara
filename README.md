@@ -1,3 +1,3 @@
-Zgłoszenie na konkurs Motorola Science Cup w zadaniu Skóra żyrafy.
+Task "Giraffe skin" submission for Motorola Science Cup competition.
 
-Program potrzebuje biblioteki SFML 2.5.1
+App needs SFML 2.5.1
